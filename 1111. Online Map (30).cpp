@@ -1,3 +1,10 @@
+/*
+解题思路：
+Dijkstra储存最短路径，dfs找最优路径
+
+破题，呸(:з」∠)
+AC代码
+*/
 #include <cstdio>
 #include <vector>
 using namespace std;
