@@ -1,3 +1,12 @@
+/*
+1127. ZigZagging on a Tree (30) 
+https://www.patest.cn/contests/pat-a-practise/1127
+解题思路：
+1.因为题目告诉了前序和中序，所以，一般是利用此来进行递归建树；
+2.递归过程中，用vector储存每一层的节点，而不是真正的去建树，可以省去很多不必要的麻烦。
+3.储存后，遍历就方便了，奇数层逆向输出，偶数层正向输出
+4.补充一句：vector大法好（逃~）
+*/
 #include <iostream>
 #include <vector>
 using namespace std;
