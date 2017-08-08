@@ -1,8 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <string>
-#include <map>
 using namespace std;
 int matrix[10000+1][10000+1];
 void getMandN(int &m,int &n,int num)
