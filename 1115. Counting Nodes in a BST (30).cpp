@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <functional>
 using namespace std;
+
 struct TreeNode
 {
 	int val;
