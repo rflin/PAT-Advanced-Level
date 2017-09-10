@@ -7,6 +7,7 @@ using namespace std;
 int n,s;
 vector<int> ino,pre;
 stack<int> stk;
+
 void build(int preL,int preR,int inoL,int inoR)
 {
 	if(preL>preR) return;
