@@ -11,7 +11,7 @@ void build(int preL,int preR,int inoL,int inoR)
 {
 	if(preL>preR) return;
 	int e=pre[preL],idx=inoL,pdx=preL;
-	while(idx<inoR&&e!=ino[idx]) idx++,pdx++;
+	while(idx<=inoR&&e!=ino[idx]) idx++,pdx++;
 	build(preL+1,pdx,inoL,idx-1);
 	build(pdx+1,preR,idx+1,inoR);
 	++s!=n?cout<<e<<" ":cout<<e;
