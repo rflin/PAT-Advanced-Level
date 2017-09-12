@@ -3,45 +3,32 @@
 #include <queue>
 #include <algorithm>
 using namespace std;
-struct TreeNode
+int n,m;
+vector<vector<int>> v;
+vector<int> lev;
+void largestGeneration(int r,int dep)
 {
-	int val,left,right;
-	TreeNode(int v=0,int l=-1,int r=-1):val(v),left(l),right(r){}
-};
-vector<TreeNode> tree;
-vector<int> v;
-int n,k;
-void inputData(int r)
-{
-	if(r!=-1)
-	{
-		inputData(tree[r].left);
-		tree[r].val=v[k++];
-		inputData(tree[r].right);
-	}
+	if(dep+1>lev.size()) lev.push_back(0);
+	lev[dep]++;
+	for(auto x:v[r]) largestGeneration(x,dep+1);
 }
 int main(int argc, char const *argv[])
 {
-	cin>>n;
-	v.resize(n);
-	for(int i=0;i<n;++i)
+	cin>>n>>m;
+	v.resize(n+1);
+	for(int i=0;i<m;++i)
 	{
-		int l,r;
-		cin>>l>>r;
-		tree.push_back(TreeNode(0,l,r));
+		int id,k,idx;
+		cin>>id>>k;
+		for(int j=0;j<k;++j)
+		{
+			cin>>idx;
+			v[id].push_back(idx);
+		}
 	}
-	for(int i=0;i<n;++i) cin>>v[i];
-	sort(v.begin(),v.end());
-	queue<int> q;
-	inputData(0);
-	q.push(0);
-	while(!q.empty())
-	{
-		int s=q.front();
-		q.pop();
-		--k!=0?cout<<tree[s].val<<" ":cout<<tree[s].val;
-		if(tree[s].left!=-1) q.push(tree[s].left);
-		if(tree[s].right!=-1) q.push(tree[s].right);
-	}
+	largestGeneration(1,0);
+	int maxlev=-1,maxcnt=-1;
+	for(int i=0;i<lev.size();++i) if(maxcnt<lev[i]) maxcnt=lev[maxlev=i];
+	cout<<maxcnt<<" "<<maxlev+1;
 	return 0;
 }
