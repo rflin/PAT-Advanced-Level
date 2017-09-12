@@ -1,7 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <map>
-#include <string>
 #include <algorithm>
 using namespace std;
 vector<int> v,tree;
@@ -20,8 +18,7 @@ int main(int argc, char const *argv[])
 	cin>>n;
 	v.resize(n);
 	tree.resize(n+1);
-	for(int i=0;i<n;++i)
-		cin>>v[i];
+	for(int i=0;i<n;++i) cin>>v[i];
 	sort(v.begin(),v.end());
 	build(1);
 	for(unsigned int i=1;i<tree.size();++i)
