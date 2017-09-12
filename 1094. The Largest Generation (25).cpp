@@ -3,38 +3,45 @@
 #include <queue>
 #include <algorithm>
 using namespace std;
-int n,m;
-vector<vector<int>> v; 
-vector<int> lev;
-void solve(int r,int dep)
+struct TreeNode
 {
-	if(dep+1>lev.size())lev.resize(dep+1);
-	lev[dep]++;
-	for(auto x:v[r])
+	int val,left,right;
+	TreeNode(int v=0,int l=-1,int r=-1):val(v),left(l),right(r){}
+};
+vector<TreeNode> tree;
+vector<int> v;
+int n,k;
+void inputData(int r)
+{
+	if(r!=-1)
 	{
-		solve(x,dep+1);
+		inputData(tree[r].left);
+		tree[r].val=v[k++];
+		inputData(tree[r].right);
 	}
 }
-int main()
+int main(int argc, char const *argv[])
 {
-	cin>>n>>m;
-	v.resize(n+1);
-	for(int i=0;i<m;++i)
+	cin>>n;
+	v.resize(n);
+	for(int i=0;i<n;++i)
 	{
-		int id,k,idx;
-		cin>>id>>k;
-		for(int i=0;i<k;++i)
-		{
-			cin>>idx;
-			v[id].push_back(idx);
-		}
+		int l,r;
+		cin>>l>>r;
+		tree.push_back(TreeNode(0,l,r));
 	}
-	solve(1,0);
-	int l=0,maxgen=-1;
-	for(unsigned int i=0;i<lev.size();++i)
+	for(int i=0;i<n;++i) cin>>v[i];
+	sort(v.begin(),v.end());
+	queue<int> q;
+	inputData(0);
+	q.push(0);
+	while(!q.empty())
 	{
-		if(maxgen<lev[i]) maxgen=lev[l=i];
+		int s=q.front();
+		q.pop();
+		--k!=0?cout<<tree[s].val<<" ":cout<<tree[s].val;
+		if(tree[s].left!=-1) q.push(tree[s].left);
+		if(tree[s].right!=-1) q.push(tree[s].right);
 	}
-	cout<<maxgen<<" "<<l+1;
 	return 0;
 }
