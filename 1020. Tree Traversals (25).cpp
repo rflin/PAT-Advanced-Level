@@ -1,8 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <stack>
-#include <queue>
-#include <algorithm>
 using namespace std;
 int n,s;
 vector<int> ino,pos;
