@@ -1,45 +1,42 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
 using namespace std;
-struct node
+struct TreeNode
 {
-	int left,right;
-	int data;
-}T[102];
-int a[102],k=0;
-void Traverse(int r)
+	int val,left,right;
+	TreeNode(int v=0,int l=-1,int r=-1):val(v),left(l),right(r){}
+};
+vector<TreeNode> tree;
+vector<int> v;
+vector<vector<int>> lev;
+int n,k;
+void getLevTra(int r,int dep)
 {
+	if(dep+1>lev.size()) lev.push_back(vector<int>());
 	if(r!=-1)
 	{
-		Traverse(T[r].left);
-		T[r].data=a[k++];
-		Traverse(T[r].right);
+		getLevTra(tree[r].left,dep+1);
+		lev[dep].push_back(v[k++]);
+		getLevTra(tree[r].right,dep+1);
 	}
 }
-int main()
+int main(int argc, char const *argv[])
 {
-	int n;
 	cin>>n;
+	v.resize(n);
 	for(int i=0;i<n;++i)
 	{
 		int l,r;
 		cin>>l>>r;
-		T[i].left=l;
-		T[i].right=r;
+		tree.push_back(TreeNode(0,l,r));
 	}
-	for(int i=0;i<n;++i)
-		cin>>a[i];
-	sort(a,a+n);
-	Traverse(0);
-	int queue[1000],f=0,r=0;
-	queue[r++]=0;
-	while(f!=r)
+	for(int i=0;i<n;++i) cin>>v[i];
+	sort(v.begin(),v.end());
+	getLevTra(0,0);
+	for(auto xv:lev)
 	{
-		--k;
-		int s=queue[f++];
-		k==0?cout<<T[s].data:cout<<T[s].data<<" ";
-		if(T[s].left!=-1) queue[r++]=T[s].left;
-		if(T[s].right!=-1) queue[r++]=T[s].right;
+		for(auto x:xv) --k==0?cout<<x:cout<<x<<" ";
 	}
 	return 0;
 }
