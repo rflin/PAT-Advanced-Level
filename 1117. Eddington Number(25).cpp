@@ -1,3 +1,6 @@
+/*
+题目地址：https://www.patest.cn/contests/pat-a-practise/1117
+*/
 #include <iostream>
 #include <vector>
 #include <algorithm>
