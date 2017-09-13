@@ -1,3 +1,7 @@
+/*
+题目地址：https://www.patest.cn/contests/pat-a-practise/1129
+思路：stl的set用法
+*/
 #include <iostream>
 #include <vector>
 #include <set> 
