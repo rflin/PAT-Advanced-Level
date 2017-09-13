@@ -1,3 +1,7 @@
+/*
+题目地址：https://www.patest.cn/contests/pat-a-practise/1114
+思路：dfs
+*/
 #include <iostream>
 #include <vector>
 #include <algorithm>
