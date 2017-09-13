@@ -1,8 +1,9 @@
+/*
+题目地址：https://www.patest.cn/contests/pat-a-practise/1130
+思路：递归求解
+*/
 #include <iostream>
-#include <cstdio>
 #include <vector>
-#include <stack>
-#include <queue>
 #include <algorithm>
 using namespace std;
 struct TreeNode
