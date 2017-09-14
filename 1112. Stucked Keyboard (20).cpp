@@ -44,5 +44,5 @@ int main()
 	gets(str);
 	stuckedKey(str,strlen(str));
 	cout<<possKey<<endl<<ans;
-    return 0;
+	return 0;
 }
