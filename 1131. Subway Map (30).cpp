@@ -62,5 +62,5 @@ int main()
 		printf("%d\n",minstation);
 		for(auto x:ans) printf("Take Line#%d from %04d to %04d.\n",x.line,x.s,x.e);
 	}
-    return 0;
+	return 0;
 }
