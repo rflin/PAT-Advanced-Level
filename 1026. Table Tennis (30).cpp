@@ -1,4 +1,4 @@
-/*重新写了下这题，最后一个测试点还是过不了，只有29分*/
+/*重新写了下这题，最后一个测试点还是过不了，只有29分。*/
 #include <bits/stdc++.h>
 using namespace std;
 struct record
