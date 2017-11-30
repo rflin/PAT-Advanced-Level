@@ -1,3 +1,4 @@
+/*感谢nuaajeff提出的issue，已修正，于2017/11/30*/
 #include <bits/stdc++.h>
 using namespace std;
 long long val(char ch)
@@ -16,13 +17,13 @@ long long minRadix(string &v)
 	for(auto x:v) r=max(r,val(x));
 	return r+1;
 }
-long long compare(long long a,string &b,int radix)
+long long compare(long long a,string &b,long long radix)
 {
 	long long m=0;
 	for(auto x:b)
 	{
 		m=m*radix+val(x);
-		if(m>a) return 1;
+		if(m>a||m<0) return 1;//注意可能溢出变为负值，测试点3
 	}
 	return m==a?0:-1;
 }
