@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 struct friends
 {
 	int x,y;
@@ -24,7 +25,7 @@ bool cmp(const friends &a,const friends &b)
 }
 int main()
 {
-	freopen("1.txt","r",stdin);
+	//freopen("1.txt","r",stdin);
 	int n,m,k;
 	cin>>n>>m;
 	for(int i=0;i<m;++i)
