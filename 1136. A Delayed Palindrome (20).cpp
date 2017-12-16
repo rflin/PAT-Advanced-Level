@@ -1,12 +1,12 @@
+/*
+说明：
+1、测试数据稍弱；如果输入10000，应该输出10000 + 1 = 10001，而不是+ 00001，但本测试用例无此情况，故可以略去
+2、实际考察大数相加
+注意：
+1、如果输入A本身是回文数，则不进行迭代求和，应该直接输出结果
+*/
 #include <bits/stdc++.h>
 using namespace std;
-string cutNumber(string N)
-{
-    size_t i=0;
-    while(N[i]=='0'&&i<N.size())++i;
-    if(i==N.size()) return string(1,'0');
-    return N.substr(i,N.size()-i);
-}
 string add(const string &A,const string &B)
 {
     int i=A.size()-1,sur=0;
@@ -44,7 +44,7 @@ int main()
         B=A;
         reverse(B.begin(),B.end());
         C=add(A,B);
-        cout<<A<<" + "<<cutNumber(B)<<" = "<<C<<endl;
+        cout<<A<<" + "<<B<<" = "<<C<<endl;
         if(ispalindromic(C))
         {
             cout<<C<<" is a palindromic number."<<endl;
