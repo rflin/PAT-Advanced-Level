@@ -1,3 +1,4 @@
+/*dfs判断连通*/
 #include <bits/stdc++.h>
 using namespace std;
 vector<int> v[1024];
