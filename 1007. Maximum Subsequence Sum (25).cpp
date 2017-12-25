@@ -1,5 +1,5 @@
-/*此处采用分治算法（nlogn）
-注：O(n^2)也能过
+/*此处采用的方法是自己尝试写的分治算法（nlogn）
+实际上，该题算法复杂的o(n^2)也能过（嵌套两次循环），略
 */
 #include <iostream>
 #include <vector>
