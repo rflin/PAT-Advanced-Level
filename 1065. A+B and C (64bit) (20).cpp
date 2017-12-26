@@ -1,3 +1,4 @@
+/*注意溢出判断*/
 #include <iostream>
 using namespace std;
 int main()
