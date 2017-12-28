@@ -1,3 +1,4 @@
+/*需要注意的点，编译未通过和分值为0是不一样的概念，但是最后都是输出为0，前者可能不在列表里，但是后者一定在列表里，即使是后者总分分值为0*/
 #include <iostream>
 #include <algorithm>
 #include <map>
