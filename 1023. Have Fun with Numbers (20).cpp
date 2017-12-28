@@ -29,7 +29,6 @@ bool judge(string &a,string &b)
 int main()
 {
     string a,b;
-    vector<int> v(10,0);
     cin>>a;
     b=doubleNum(a);
     if(judge(a,b))cout<<"Yes\n"<<b<<endl;
