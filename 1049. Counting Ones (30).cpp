@@ -1,3 +1,4 @@
+/*思路：计算每个‘位’上为1的组合个数，再进行求和*/
 #include <iostream>
 #include <cmath>
 #include <cstdlib>
