@@ -1,40 +1,35 @@
+/*
+题目地址：https://www.patest.cn/contests/pat-a-practise/1077
+考察：字符串处理
+*/
 #include <bits/stdc++.h>
 using namespace std;
+string Kuchiguse(const string &line,const string &x)
+{
+	int i=line.size()-1,j=x.size()-1;
+	string ret;
+	while(i>=0&&j>=0)
+	{
+		if(line[i]==x[j]) ret=line[i]+ret;
+		else break;
+		--i,--j;
+	}
+	return ret;
+}
 int main()
 {
-	vector<string> v;
 	int n;
+	string ret;
 	cin>>n;
 	cin.get();
-	while(n--)
+	getline(cin,ret);
+	while(--n)
 	{
 		string line;
 		getline(cin,line);
-		v.push_back(line);
+		ret=Kuchiguse(line,ret);
 	}
-	string ret;
-	while(true)
-	{
-		if(v[0].size()==0)break;
-		char last=v[0].back();
-		v[0].pop_back();
-		size_t i=1;
-		while(i<v.size())
-		{
-			if(v[i].size()>0&&v[i].back()==last) v[i].pop_back();
-			else break;
-			++i;
-		}
-		if(i!=v.size())break;
-		ret+=last;
-	}
-	while(ret.size()>0&&ret.back()==' ')ret.pop_back();
-	if(ret.size()==0)
-	{
-		cout<<"nai";
-		return 0;
-	}
-	for(int i=ret.size()-1;i>=0;--i)
-		cout<<ret[i];
+	if(ret.empty()) cout<<"nai";
+	else cout<<ret;
 	return 0;
 }
