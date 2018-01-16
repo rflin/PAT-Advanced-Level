@@ -1,6 +1,6 @@
 /*
 题目地址：https://www.patest.cn/contests/pat-a-practise/1077
-考察：字符串处理
+考察点：最长公共后缀，字符串处理
 */
 #include <bits/stdc++.h>
 using namespace std;
