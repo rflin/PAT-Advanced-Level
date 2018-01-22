@@ -5,7 +5,7 @@
 
 方法一，暴力求解，嵌套两次循环，复杂度（o(n^2)）
 
-```
+`+``
 #include <bits/stdc++.h>
 using namespace std;
 int maxsum=0x80000000,L,R;
@@ -47,11 +47,11 @@ int main()
 	printf("%d %d %d\n",maxsum,nums[L],nums[R]);
 	return 0;
 }
-```
+`+``
 
 方法二，分治求解，复杂度（o(nlogn)）
 
-```
+`+``
 #include <bits/stdc++.h>
 using namespace std;
 struct node
@@ -121,11 +121,11 @@ int main()
 	printf("%d %d %d\n",ret.sum,nums[ret.left],nums[ret.right]);
 	return 0;
 }
-```
+`+``
 
 方法三：dp，复杂度（o(n)）
 
-```
+`+``
 #include <bits/stdc++.h>
 using namespace std;
 struct node
@@ -169,7 +169,7 @@ int main()
 	printf("%d %d %d\n",ret.sum,nums[ret.left],nums[ret.right]);
 	return 0;
 }
-```
+`+``
 
 以下采用o(n)复杂度
 */
