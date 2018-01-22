@@ -125,4 +125,46 @@ int main()
 
 方法三：在线处理，复杂度（o(n)）
 */
-
+#include <bits/stdc++.h>
+using namespace std;
+struct node
+{
+	int left,right;
+	int sum;
+	node(int l,int r,int s):left(l),right(r),sum(s){}
+};
+node maxSubseqSum(vector<int> &nums)
+{
+	int n=nums.size();
+	node maxsum(-1,-1,0x80000000);
+	node cursum(0,0,0);
+	for(int i=0;i<n;++i)
+	{
+		cursum.sum+=nums[i];
+		cursum.right=i;
+		if(cursum.sum>maxsum.sum) maxsum=cursum;
+		if(cursum.sum<0) cursum=node(i+1,i+1,0);
+	}
+	return maxsum;
+}
+int main()
+{
+	vector<int> nums;
+	int n;
+	scanf("%d",&n);
+	while(n--)
+	{
+		int x;
+		scanf("%d",&x);
+		nums.push_back(x);
+	}
+	node ret=maxSubseqSum(nums);
+	if(ret.sum<0)
+	{
+		ret.sum=0;
+		ret.left=0;
+		ret.right=nums.size()-1;
+	}
+	printf("%d %d %d\n",ret.sum,nums[ret.left],nums[ret.right]);
+	return 0;
+}
