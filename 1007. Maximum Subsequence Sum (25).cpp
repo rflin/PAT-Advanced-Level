@@ -171,7 +171,7 @@ int main()
 }
 ```
 
-一个简化的版本如下，
+以下采用o(n)复杂度
 */
 
 #include <bits/stdc++.h>
