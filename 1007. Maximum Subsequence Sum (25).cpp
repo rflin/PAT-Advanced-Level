@@ -123,8 +123,9 @@ int main()
 }
 ```
 
-方法三：在线处理，复杂度（o(n)）
-*/
+方法三：dp，复杂度（o(n)）
+
+```
 #include <bits/stdc++.h>
 using namespace std;
 struct node
@@ -166,5 +167,42 @@ int main()
 		ret.right=nums.size()-1;
 	}
 	printf("%d %d %d\n",ret.sum,nums[ret.left],nums[ret.right]);
+	return 0;
+}
+```
+
+一个简化的版本如下，
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n;
+	vector<int> nums;
+	scanf("%d",&n);
+	nums.resize(n);
+	for(int i=0;i<n;++i)
+		scanf("%d",&nums[i]);
+	int cur_l=0,cur_r=0,cursum=0;
+	int l=0,r=0,maxsum=0x80000000;
+	for(int i=0;i<n;++i)
+	{
+		cursum+=nums[i];
+		cur_r=i;
+		if(cursum>maxsum)
+		{
+			maxsum=cursum;
+			l=cur_l;
+			r=cur_r;
+		}
+		if(cursum<0)
+		{
+			cursum=0;
+			cur_l=cur_r=i+1;
+		}
+	}
+	if(maxsum<0)maxsum=0,l=0,r=n-1;
+	printf("%d %d %d\n",maxsum,nums[l],nums[r]);
 	return 0;
 }
