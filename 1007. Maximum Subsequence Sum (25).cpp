@@ -1,60 +1,128 @@
-/*此处采用的方法是自己尝试写的分治算法（nlogn）
-实际上，该题算法复杂的o(n^2)也能过（嵌套两次循环），略
-*/
-#include <iostream>
-#include <vector>
-#include <algorithm>
+/*
+题目地址：https://www.patest.cn/contests/pat-a-practise/1007
+
+作为一道经典的题目，这里列出三种解法
+
+方法一，暴力求解，嵌套两次循环，复杂度（o(n^2)）
+
+```
+#include <bits/stdc++.h>
 using namespace std;
-int v[10004],n;
-bool check=0;
-struct LRS
+int maxsum=0x80000000,L,R;
+void maxSubseqSum(vector<int> &nums)
 {
-    int left,right,sum;
-    LRS(int l,int r,int s):left(l),right(r),sum(s){}
-    bool operator<(const LRS &a)const
-    {
-        return sum==a.sum?left>a.left:sum<a.sum;
-    }
-};
-LRS CrossSubseq(int A[],int low,int high,int mid)
-{
-    int lmax=0x80000000,rmax=0x80000000;
-    int sum=0,l,r;
-    for(int i=mid;i>=low;--i)
-    {
-        sum+=A[i];
-        if(lmax<sum)
-        {
-            lmax=sum;
-            l=i;
-        }
-    }
-    sum=0;
-    for(int i=mid+1;i<=high;++i)
-    {
-        sum+=A[i];
-        if(rmax<sum)
-        {
-            rmax=sum;
-            r=i;
-        }
-    }
-    return LRS(l,r,lmax+rmax);
-}
-LRS MaxSubseq(int A[],int low,int high)
-{
-    if(low==high) return LRS(low,high,A[low]);
-    return max(max(MaxSubseq(A,low,(low+high)/2),MaxSubseq(A,(low+high)/2+1,high)),CrossSubseq(A,low,high,(low+high)/2));
+	int n=nums.size();
+	for(int i=0;i<n;++i)
+	{
+		int cursum=0;
+		for(int j=i;j<n;++j)
+		{
+			cursum+=nums[j];
+			if(cursum>maxsum)
+			{
+				maxsum=cursum;
+				L=i;
+				R=j;
+			}
+		}
+	}
 }
 int main()
 {
-    cin>>n;
-    for(int i=0;i<n;++i)
-    {
-        cin>>v[i];
-        if(v[i]>=0) check=1;
-    }
-    LRS o=(check)?MaxSubseq(v,0,n-1):LRS(0,n-1,0);
-    cout<<o.sum<<" "<<v[o.left]<<" "<<v[o.right];
-    return 0;
+	vector<int> nums;
+	int n;
+	scanf("%d",&n);
+	while(n--)
+	{
+		int x;
+		scanf("%d",&x);
+		nums.push_back(x);
+	}
+	maxSubseqSum(nums);
+	if(maxsum<0)
+	{
+		maxsum=0;
+		L=0;R=nums.size()-1;
+	}
+	printf("%d %d %d\n",maxsum,nums[L],nums[R]);
+	return 0;
 }
+```
+
+方法二，分治求解，复杂度（o(nlogn)）
+
+```
+#include <bits/stdc++.h>
+using namespace std;
+struct node
+{
+	int left,right;
+	int sum;
+	node(int l,int r,int s):left(l),right(r),sum(s){}
+};
+node maxval(const node &a,const node &b)
+{
+	if(a.sum>b.sum||(a.sum==b.sum&&a.left<b.left))
+		return a;
+	return b;
+}
+node crossSubseqSum(vector<int> &nums,int left,int right,int mid)
+{
+	int lmax=0x80000000,rmax=0x80000000;
+	int sum=0,l,r;
+	for(int i=mid;i>=left;--i)
+	{
+		sum+=nums[i];
+		if(sum>lmax)
+		{
+			lmax=sum;
+			l=i;
+		}
+	}
+	sum=0;
+	for(int i=mid+1;i<=right;++i)
+	{
+		sum+=nums[i];
+		if(sum>rmax)
+		{
+			rmax=sum;
+			r=i;
+		}
+	}
+	return node(l,r,lmax+rmax);
+}
+node maxSubseqSum(vector<int> &nums,int left,int right)
+{
+	if(left==right) return node(left,right,nums[left]);
+	int mid=(left+right)/2;
+	node l=maxSubseqSum(nums,left,mid);
+	node r=maxSubseqSum(nums,mid+1,right);
+	node m=crossSubseqSum(nums,left,right,mid);
+	return maxval(maxval(l,r),m);
+}
+int main()
+{
+	vector<int> nums;
+	int n;
+	scanf("%d",&n);
+	while(n--)
+	{
+		int x;
+		scanf("%d",&x);
+		nums.push_back(x);
+	}
+	node ret=maxSubseqSum(nums,0,nums.size()-1);
+	if(ret.sum<0)
+	{
+		ret.sum=0;
+		ret.left=0;
+		ret.right=nums.size()-1;
+	}
+	printf("%d %d %d\n",ret.sum,nums[ret.left],nums[ret.right]);
+	return 0;
+}
+```
+
+方法三：在线处理，复杂度（o(n)）
+*/
+
