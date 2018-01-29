@@ -17,7 +17,8 @@ int main()
 	{
 		if(nums[x]==1)
 		{
-			cout<<x;return 0;
+			cout<<x;
+			return 0;
 		}
 	}
 	cout<<"None";
