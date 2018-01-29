@@ -1,38 +1,42 @@
-#include <bits/stdc++.h>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
 using namespace std;
-map<int,set<int>> mp;
-int convertToint(char name[])
+map<int,vector<int>> mp;
+int str2int(char name[])
 {
-    int ret=0;
+    int idx=0;
     for(int i=0;i<3;++i)
-        ret=ret*100+(name[i]-'A');
-    return ret*10+name[3];
+        idx=idx*100+(name[i]-'A');
+    return idx*10+name[3]-'0';
 }
 int main()
 {
     int n,k;
+    char name[8];
     scanf("%d %d",&n,&k);
     for(int i=0;i<k;++i)
     {
-        int coursei,studentn;
-        scanf("%d %d",&coursei,&studentn);
-        while(studentn--)
+        int courseNum,count;
+        scanf("%d %d",&courseNum,&count);
+        while(count--)
         {
-            char name[8];
             scanf("%s",name);
-            int ret=convertToint(name);
-            mp[ret].insert(coursei);
+            int idx=str2int(name);
+            mp[idx].push_back(courseNum);
         }
     }
     while(n--)
     {
-        char name[8];
         scanf("%s",name);
-        int ret=convertToint(name);
-        printf("%s %lld",name,mp[ret].size());
-        for(auto x:mp[ret])
-            cout<<" "<<x;
-        cout<<endl;
+        int idx=str2int(name);
+        vector<int> &v=mp[idx];
+        sort(v.begin(),v.end());
+        printf("%s %lld",name,v.size());
+        for(auto x:v)
+            printf(" %d",x);
+        printf("\n");
     }
     return 0;
 }
