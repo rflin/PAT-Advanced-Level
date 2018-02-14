@@ -1,6 +1,6 @@
+/*考察字符串哈希*/
 #include <cstdio>
 #include <vector>
-#include <map>
 #include <algorithm>
 using namespace std;
 vector<int> mp[26*26*26*10];
