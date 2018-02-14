@@ -3,12 +3,12 @@
 #include <map>
 #include <algorithm>
 using namespace std;
-map<int,vector<int>> mp;
+vector<int> mp[26*26*26*10];
 int str2int(char name[])
 {
     int idx=0;
     for(int i=0;i<3;++i)
-        idx=idx*100+(name[i]-'A');
+        idx=idx*26+(name[i]-'A');
     return idx*10+name[3]-'0';
 }
 int main()
