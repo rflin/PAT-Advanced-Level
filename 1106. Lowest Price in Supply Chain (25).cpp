@@ -1,37 +1,35 @@
 #include <iostream>
 #include <cstdio>
 #include <vector>
-#include <stack>
-#include <queue>
 #include <algorithm>
 using namespace std;
-int n,cnt,md=0x7fffffff;
+int n,cnt,maxdepth=0x7fffffff;
 double p,r; 
 vector<vector<int>> v;
-void mindepth(int r,int dep)
+void dfs(int r,int depth)
 {
 	if(v[r].size()==0)
 	{
-		if(dep==md)cnt++;
-		else if(dep<md) cnt=1,md=dep;
+		if(depth==maxdepth) cnt++;
+		else if(depth<maxdepth) cnt=1,maxdepth=depth;
 	}
-	for(auto x:v[r]) mindepth(x,dep+1);
+	for(auto x:v[r]) dfs(x,depth+1);
 }
 int main()
 {
-	cin>>n>>p>>r;
+	scanf("%d %lf %lf",&n,&p,&r);
 	v.resize(n);
 	for(int i=0;i<n;++i)
 	{
 		int k,idx;
-		cin>>k;
+		scanf("%d",&k);
 		for(int j=0;j<k;++j)
 		{
-			cin>>idx;
+			scanf("%d",&idx);
 			v[i].push_back(idx);
 		}
 	}
-	mindepth(0,0);
-	printf("%.4lf %d",p*pow((1+r/100),md),cnt);
+	dfs(0,0);
+	printf("%.4lf %d",p*pow((1+r*0.01),maxdepth),cnt);
 	return 0;
 }
