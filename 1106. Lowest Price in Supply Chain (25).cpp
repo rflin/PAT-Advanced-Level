@@ -3,15 +3,15 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
-int n,cnt,maxdepth=0x7fffffff;
+int n,cnt,mindepth=0x7fffffff;
 double p,r; 
 vector<vector<int>> v;
 void dfs(int r,int depth)
 {
 	if(v[r].size()==0)
 	{
-		if(depth==maxdepth) cnt++;
-		else if(depth<maxdepth) cnt=1,maxdepth=depth;
+		if(depth==mindepth) cnt++;
+		else if(depth<mindepth) cnt=1,mindepth=depth;
 	}
 	for(auto x:v[r]) dfs(x,depth+1);
 }
@@ -30,6 +30,6 @@ int main()
 		}
 	}
 	dfs(0,0);
-	printf("%.4lf %d",p*pow((1+r*0.01),maxdepth),cnt);
+	printf("%.4lf %d",p*pow((1+r*0.01),mindepth),cnt);
 	return 0;
 }
