@@ -20,7 +20,6 @@ bool judgeNums(string &a,string &b)
 	for(char x:b) counts[x-'0']--;
 	for(int x:counts) if(x) return false;
 	return true;
-
 }
 int main()
 {
