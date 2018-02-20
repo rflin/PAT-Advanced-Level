@@ -1,37 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-string doubleNum(const string &n)
+string doubleNums(const string &nums)
 {
-    int add=0;
-    string dn;
-    for(int i=n.size()-1;i>=0;--i)
-    {
-        int x=n[i]-'0';
-        int num=x*2+add;
-        add=num/10;
-        dn+=num%10+'0';
-    }
-    if(add>0)dn+=add+'0';
-    reverse(dn.begin(),dn.end());
-    return dn;
+	string results;
+	int n=nums.size(),add=0;
+	for(int i=0;i<n;++i)
+	{
+		results+='0'+((nums[n-1-i]-'0')*2+add)%10;
+		add=((nums[n-1-i]-'0')*2+add)/10;
+	}
+	if(add>0) results+='0'+add;
+	reverse(results.begin(),results.end());
+	return results;
 }
-bool judge(string &a,string &b)
+bool judgeNums(string &a,string &b)
 {
-    vector<int> v(10,0);
-    for(auto x:a)
-        v[x-'0']++;
-    for(auto x:b)
-        v[x-'0']--;
-    for(auto x:v)
-        if(x)return false;
-    return true;
+	vector<int> counts(10,0);
+	for(char x:a) counts[x-'0']++;
+	for(char x:b) counts[x-'0']--;
+	for(int x:counts) if(x) return false;
+	return true;
+
 }
 int main()
 {
-    string a,b;
-    cin>>a;
-    b=doubleNum(a);
-    if(judge(a,b))cout<<"Yes\n"<<b<<endl;
-    else cout<<"No\n"<<b<<endl;
-    return 0;
+	string nums,results;
+	cin>>nums;
+	results=doubleNums(nums);
+	if(judgeNums(nums,results)) cout<<"Yes\n";
+	else cout<<"No\n";
+	cout<<results;
+	return 0;
 }
