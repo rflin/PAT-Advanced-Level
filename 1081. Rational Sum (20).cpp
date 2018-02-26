@@ -8,14 +8,13 @@ struct Rational
 	Rational & operator +=(const Rational &val)
 	{
 		llt x=a*val.b+b*val.a,y=b*val.b;
-		i+=val.i+x/y;
-		a=x%y;
-		b=y;
+		i+=val.i,a=x,b=y;
 		simplify();
 		return *this;
 	}
 	void simplify()
 	{
+		i+=a/b,a%=b;
 		llt v=abs(__gcd(a,b));
 		a/=v,b/=v;
 		if(a<0) i-=1,a+=b;
