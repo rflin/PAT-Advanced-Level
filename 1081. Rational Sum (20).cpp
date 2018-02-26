@@ -1,75 +1,42 @@
 #include <bits/stdc++.h>
 using namespace std;
-int ntor,dtor,inter;
-int gcd(int a,int b)
+typedef long long llt;
+struct Rational
 {
-	if(a==0) return b;
-	int r=0;
-	while((r=a%b)!=0)
+	llt i,a,b;
+	Rational(llt _i,llt _a,llt _b):i(_i),a(_a),b(_b){}
+	Rational & operator +=(const Rational &val)
 	{
-		a=b;
-		b=r;
+		llt x=a*val.b+b*val.a,y=b*val.b;
+		i+=val.i+x/y;
+		a=x%y;
+		b=y;
+		simplify();
+		return *this;
 	}
-	return b;
-}
-void simp(int &a,int &b)
-{
-	int x=gcd(a,b);
-	a/=x;
-	b/=x;
-}
-void part(int &a,int &b,int &x)
-{
-	x=0;
-	if(abs(a)<b)
+	void simplify()
 	{
-		if(a<0)
-		{
-			x--;
-			a+=b;
-		}
-		return;
+		llt v=abs(__gcd(a,b));
+		a/=v,b/=v;
+		if(a<0) i-=1,a+=b;
 	}
-	int sign=a/abs(a);
-	a*=sign;
-	x=a/b;
-	a%=b;
-	if(sign==-1)
-	{
-		x--;
-		a=b-a;
-	}
-}
-void add(int a,int b,int x)
-{
-	ntor=a*dtor+b*ntor;
-	dtor*=b;
-	int sur=0;
-	part(ntor,dtor,sur);
-	simp(ntor,dtor);
-	inter+=x+sur;
-}
+};
 int main()
 {
 	int n;
+	Rational result(0,0,1);
 	scanf("%d",&n);
-	scanf("%d/%d",&ntor,&dtor);
-	part(ntor,dtor,inter);
-	simp(ntor,dtor);
-	--n;
-	for(int i=0;i<n;++i)
+	while(n--)
 	{
-		int a,b,x=0;
-		scanf("%d/%d",&a,&b);
-		part(a,b,x);
-		simp(a,b);
-		add(a,b,x);
+		Rational val(0,0,1);
+		scanf("%lld/%lld",&val.a,&val.b);
+		val.simplify();
+		result+=val;
 	}
-	if(inter)
-	{
-		printf("%d",inter);
-		if(ntor) printf(" %d/%d\n",ntor,dtor);
-	}
-	else ntor?printf("%d/%d\n",ntor,dtor):printf("0\n");
+	if(result.i&&result.a)
+		printf("%lld %lld/%lld\n",result.i,result.a,result.b);
+	else if(!result.i&&result.a)
+		printf("%lld/%lld\n",result.a,result.b);
+	else printf("%lld\n",result.i);
 	return 0;
 }
