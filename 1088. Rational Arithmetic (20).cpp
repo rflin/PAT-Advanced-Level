@@ -1,89 +1,71 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cstdio>
+#include <bits/stdc++.h>
 using namespace std;
-long int a1,b1,a2,b2,a,b;
-long int gcd(long int a,long int b)
+typedef long long llt;
+struct Rational
 {
-    if(b==0) return a;
-    long int r;
-    while((r=a%b)) a=b,b=r;
-    return b;
-}
-void simplify(long int &a,long int &b)
+	llt i,a,b;
+	Rational(llt ix,llt ax,llt bx):i(ix),a(ax),b(bx){}
+	Rational operator + (const Rational &val)
+	{
+		Rational result(i+val.i,a*val.b+b*val.a,b*val.b);
+		result.simplify();
+		return result;
+	}
+	Rational operator - (const Rational &val)
+	{
+		Rational result(i-val.i,a*val.b-b*val.a,b*val.b);
+		result.simplify();
+		return result;
+	}
+	Rational operator * (const Rational &val)
+	{
+		Rational A(0,i*b+a,b),B(0,val.i*val.b+val.a,val.b);
+		Rational result(0,A.a*B.a,A.b*B.b);
+		result.simplify();
+		return result;
+	}
+	Rational operator / (const Rational &val)
+	{
+		Rational A(0,i*b+a,b),B(0,val.i*val.b+val.a,val.b);
+		Rational result(0,A.a*B.b,A.b*B.a);
+		if(result.b<0) result.a*=-1,result.b*=-1;
+		result.simplify();
+		return result;
+	}
+	void simplify()
+	{
+		i+=a/b,a%=b;
+		llt v=abs(__gcd(a,b));
+		a/=v,b/=v;
+		if(i<0&&a>0) i+=1,a-=b;
+	}
+	string r2str()
+	{
+		string ret;
+		if(i&&a) ret=to_string(i)+" "+to_string(abs(a))+"/"+to_string(b);
+		else if(!i&&a) ret=to_string(a)+"/"+to_string(b);
+		else ret=to_string(i);
+		return i<0||a<0?"("+ret+")":ret;
+	}
+};
+void showEquation(Rational &r1,Rational &r2,Rational res,char op)
 {
-    long int k=gcd(abs(a),b);
-    a/=k;b/=k;
-}
-void disRA(long int a,long int b)
-{
-    if(b==0)
-    {
-        printf("Inf");
-        return;
-    }
-    if(a==0)
-    {
-        printf("0");
-        return;
-    }
-    long int sg=(a<0)?-1:1;
-    a*=sg;
-    long int k=a/b;
-    a%=b;
-    if(sg==-1) printf("(-");
-    if(k) printf("%ld",k);
-    if(k&&b!=1) printf(" ");
-    if(b!=1) printf("%ld/%ld",a,b);
-    if(sg==-1) printf(")");
-}
-void disEqua(long int a1,long int b1,long int a2,long int b2,long int a,long int b,char op)
-{
-    disRA(a1,b1);
-    printf(" %c ",op);
-    disRA(a2,b2);
-    printf(" = ");
-    disRA(a,b);
-    printf("\n");
-}
-void addition()
-{
-    a=a1*b2+a2*b1;
-    b=b1*b2;
-    simplify(a,b);
-    disEqua(a1,b1,a2,b2,a,b,'+');
-}
-void subtraction()
-{
-    a=a1*b2-a2*b1;
-    b=b1*b2;
-    simplify(a,b);
-    disEqua(a1,b1,a2,b2,a,b,'-');
-}
-void multiplication()
-{
-    a=a1*a2;
-    b=b1*b2;
-    simplify(a,b);
-    disEqua(a1,b1,a2,b2,a,b,'*');
-}
-void division()
-{
-    a=a1*b2;
-    b=b1*a2;
-    if(b<0) b=-b,a=-a;
-    simplify(a,b);
-    disEqua(a1,b1,a2,b2,a,b,'/');
+	string ans=r1.r2str()+" "+op+" "+r2.r2str()+" = "+res.r2str();
+	printf("%s\n",ans.c_str());
 }
 int main()
 {
-    scanf("%ld/%ld %ld/%ld",&a1,&b1,&a2,&b2);
-    simplify(a1,b1);
-    simplify(a2,b2);
-    addition();
-    subtraction();
-    multiplication();
-    division();
-    return 0;
+	Rational r1(0,0,1),r2(0,0,1);
+	scanf("%lld/%lld %lld/%lld",&r1.a,&r1.b,&r2.a,&r2.b);
+	r1.simplify(),r2.simplify();
+	showEquation(r1,r2,r1+r2,'+');
+	showEquation(r1,r2,r1-r2,'-');
+	showEquation(r1,r2,r1*r2,'*');
+	if(!r2.i&&!r2.a)
+	{
+		string ans=r1.r2str()+" / "+r2.r2str()+" = Inf";
+		printf("%s\n",ans.c_str());
+	}
+	else showEquation(r1,r2,r1/r2,'/');
+	return 0;
 }
