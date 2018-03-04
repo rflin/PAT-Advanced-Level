@@ -1,47 +1,34 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
-int vn,an,k;
-vector<vector<int>> v;
-bool isHamiltonian(vector<int> &ph)
+bool A[256][256];
+int n,m;
+bool isHamiltonianCycle(vector<int> &v)
 {
-	if(ph[0]!=ph.back()||(int)ph.size()!=vn+1) return false;
-	vector<bool> visit(vn+1,0);
-	for(size_t i=0;i<ph.size()-1;++i)
-	{
-		int cur=ph[i],tag=0;
-		for(auto x:v[cur])
-		{
-			if(x==ph[i+1]&&!visit[x])
-			{
-				tag=1;visit[x]=true;
-				break;
-			}
-		}
-		if(tag==0) return false;
+	if(v[0]!=v.back()||(int)v.size()!=n+1) return 0;
+	vector<bool> visit(v.size()+1,0);
+	for(int i=0;i<(int)v.size()-1;++i){
+		if(A[v[i]][v[i+1]]==0||visit[v[i]]) return 0;
+		else visit[v[i]]=1;
 	}
-	return true;
+	return 1;
 }
 int main()
 {
-	scanf("%d %d",&vn,&an);
-	v.resize(vn+1);
-	for(int i=0;i<an;++i)//储存邻接表
-	{
-		int u,w;
-		scanf("%d %d",&u,&w);
-		v[u].push_back(w);
-		v[w].push_back(u);
+	scanf("%d %d",&n,&m);
+	for(int i=0;i<m;++i){
+		int a,b;
+		scanf("%d %d",&a,&b);
+		A[a][b]=A[b][a]=1;
 	}
+	int k,n;
 	scanf("%d",&k);
-	while(k--)
-	{
-		int m;
-		scanf("%d",&m);
-		vector<int> ph(m);
-		for(int i=0;i<m;++i)
-			scanf("%d",&ph[i]);
-		isHamiltonian(ph)?cout<<"YES\n":cout<<"NO\n";
+	while(k--){
+		scanf("%d",&n);
+		vector<int> v(n);
+		for(int i=0;i<n;++i){
+			scanf("%d",&v[i]);
+		}
+		isHamiltonianCycle(v)?printf("YES\n"):printf("NO\n");
 	}
 	return 0;
-} 
+}
