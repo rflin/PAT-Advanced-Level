@@ -5,13 +5,10 @@ map<string,int> name2idx,result;
 vector<int> v[2048];
 int n,k,indexs=0,val[2048];
 int getidx(string &name){
-	if(name2idx.count(name)){
-		return name2idx[name];
-	}else{
-		name2idx[name]=indexs++;
-		idx2name.push_back(name);
-		return indexs-1;
-	}
+	if(name2idx.count(name)) return name2idx[name];
+	name2idx[name]=indexs++;
+	idx2name.push_back(name);
+	return indexs-1;
 }
 void dfs(int u,vector<bool> &visit,int &maxvtx,int &maxval,int &nums,int &sums){
 	if(visit[u]) return;
