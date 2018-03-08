@@ -1,50 +1,42 @@
 /*
-分析：
-1、前、中、后，不论以何种方式进行遍历，我们始终能对这一序列作出一个划分，比如前序遍历为：【父节点】、【左子树】、【右子树】
-2、对于前序和中序，众所周知，能唯一确定一棵二叉树，这是因为，对于前序中的父节点，在中序序列中始终体现为：
-在该点的左边，为该节点的左子树，在该点的右边，为该节点的右子树，因此，整棵树确定了；
-3、对于此题，题目告诉了前序和后序，不能唯一确定一颗二叉树，这是因为，对于子树的划分我们不是很明确，可能为左子树，也可能为右子树，
-正如测试2你所看到的那样.
-
-解题思路：
-1、递归求解即可，本代码将结果保存于in数组中；
-2、注意递归出口条件；
-3、注意unique的判定；
+分析：对于前序和中序，或者后序和中序，可以唯一确定一棵二叉树，而对于前序和后序，可能不能唯一确定一棵二叉树，原因在于，
+前序和后序对于左右子树的划分可能是不确定的。并且这种不确定，只可能出现在具有单一子树的节点中，这是因为，建树过程中，将
+该子树放在左边，或者右边，都是可以的，因为这两种方式都将产生相同的前序和后序序列。因此，判断其是否unique便依据于此：倘
+若在一次递归建树中，位于前序序列的第二个元素（是第一个元素的子树根节点，左儿子或者右儿子），和后序序列中倒数第二个元素相
+同，这意味者，对于根节点来说（前序第一个元素），其只有一个儿子（要么是左儿子，要么是右儿子），这将不是unique的。
 */
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
-int pre[30],post[30],in[30],k=0;
-bool unique=true;
-void Solve(int prL,int prR,int poL,int poR)//递归建树
+int n,pre[32],pos[32];
+bool isunique=1;
+vector<int> ino;
+void build(int preL,int preR,int posL,int posR)
 {
-    if(prL>prR||poL>poR)return;
-    if(prL==prR)
-    {
-        in[k++]=pre[prL];return;
-    }
-    else if(poL==poR)
-    {
-        in[k++]=pre[poR];return;
-    }
-    int e=pre[prL+1],i=poL;
-    while(post[i]!=e&&i<=poR-1)++i;
-    if(i==poR-1) unique=false;
-    Solve(prL+1,prL+1+i-poL,poL,i);
-    in[k++]=pre[prL];
-    Solve(prL+1+i-poL+1,prR,i+1,poR-1);
+	if(preL>preR) return;
+	if(preL==preR){
+		ino.push_back(pre[preL]);
+		return;
+	}
+	int e=pre[preL+1],prex=preL+1,posx=posL;
+	while(posx<posR&&e!=pos[posx]) ++prex,++posx;
+	if(posx==posR-1) isunique=0;
+	build(preL+1,prex,posL,posx);
+	ino.push_back(pre[preL]);
+	build(prex+1,preR,posx+1,posR-1);
 }
 int main()
 {
-    int n;
-    cin>>n;
-    for(int i=0;i<n;++i) cin>>pre[i];//前序遍历
-    for(int i=0;i<n;++i) cin>>post[i];//后序遍历
-    Solve(0,n-1,0,n-1);
-    if(unique)cout<<"Yes"<<endl;
-    else cout<<"No"<<endl;
-    for(int i=0;i<n;++i)//输出中序遍历
-    {
-        i==n-1?cout<<in[i]<<endl:cout<<in[i]<<" ";
-    }
-    return 0;
+	scanf("%d",&n);
+	for(int i=0;i<n;++i){
+		scanf("%d",&pre[i]);
+	}
+	for(int i=0;i<n;++i){
+		scanf("%d",&pos[i]);
+	}
+	build(0,n-1,0,n-1);
+	isunique?printf("Yes\n"):printf("No\n");
+	for(int i=0;i<n;++i){
+		i==n-1?printf("%d\n",ino[i]):printf("%d ",ino[i]);
+	}
+	return 0;
 }
