@@ -1,66 +1,79 @@
 #include <iostream>
+#include <map>
 #include <vector>
-#include <cstdio>
+#include <algorithm>
 using namespace std;
-struct node
-{
-	int line,s,e;
-	node(int xl,int xs,int xe):line(xl),s(xs),e(xe){}
+
+struct node{
+    int line, s, e;
+    node(){}
+    node(int l, int x, int y):line(l), s(x), e(y){}
 };
-int searchLine[10000][10000];//判断两个站点在哪条线上
-int n,q,minstation,mintransfer;//线个数，请求个数，最小的站点，最小的换乘
-vector<vector<int>> v(10000);//图的邻接表
-vector<node> ans,recp;//最终结果路径和中间记录路径
-bool visit[10000];//判断是否已经访问数组
-void subwayMap(int head,int cur,int end,int staioncnt,vector<node> &recp,int pre)
-{
-	if(cur==end&&(staioncnt<minstation||(staioncnt==minstation&&mintransfer>(int)recp.size()+1)))
-	{
-		minstation=staioncnt;
-		ans=recp;
-		ans.push_back(node(searchLine[pre][end],head,end));
-		mintransfer=ans.size();
-		return;
-	}
-	visit[cur]=1;
-	for(auto next:v[cur])
-	{
-		if(visit[next]) continue;
-		if(pre!=cur&&searchLine[pre][cur]!=searchLine[cur][next])//线路不同，cur为换乘节点
-		{
-			recp.push_back(node(searchLine[pre][cur],head,cur));//收集上一个线路信息：几号线，首站，尾站
-			subwayMap(cur,next,end,staioncnt+1,recp,cur);
-			recp.pop_back();
-		}
-		else subwayMap(head,next,end,staioncnt+1,recp,cur);//线路相同，首站不变;
-	}
-	visit[cur]=0;
+int visit[10000];
+int minstation = 0x7fffffff;
+vector<int> v[10000];
+vector<node> ans(102);
+map<int, int> mp;
+int searchLine(int x, int y){
+    if(x > y) swap(x, y);
+    return mp[x * 10000 + y];
+}
+void setLine(int x, int y, int i){
+    if(x > y) swap(x, y);
+    mp[x * 10000 + y] = i;
+}
+void subwayMap(int lhd, int pre, int u, int e, vector<node> &rp, int station){
+    if(u == e){
+        rp.push_back(node(searchLine(pre, u), lhd, u));
+        if(station < minstation || (station == minstation && rp.size() < ans.size())){
+            minstation = station;
+            ans = rp;
+        }
+        rp.pop_back();
+        return ;
+    }
+    visit[u] = 1;
+    for(size_t i = 0; i < v[u].size(); ++i){
+        int w = v[u][i];
+        if(visit[w]) continue;
+        if(pre != u && searchLine(pre, u) != searchLine(u, w)){
+            rp.push_back(node(searchLine(pre, u), lhd, u));
+            subwayMap(u, u, w, e, rp, station + 1);
+            rp.pop_back();
+        }
+        else subwayMap(lhd, u, w, e, rp, station + 1);
+    }
+    visit[u] = 0;
 }
 int main()
 {
-	scanf("%d",&n);
-	for(int i=1;i<=n;++i)
-	{
-		int k,idx,p;
-		scanf("%d %d",&k,&p);
-		for(int j=0;j<k-1;++j)
-		{
-			scanf("%d",&idx);
-			searchLine[p][idx]=searchLine[idx][p]=i;//两个相邻节点的线路
-			v[p].push_back(idx);
-			v[idx].push_back(p);
-			p=idx;
-		}
-	}
-	scanf("%d",&q);
-	while(q--)
-	{
-		int s,e;
-		scanf("%d %d",&s,&e);
-		minstation=mintransfer=0x7fffffff;
-		subwayMap(s,s,e,0,recp,s);
-		printf("%d\n",minstation);
-		for(auto x:ans) printf("Take Line#%d from %04d to %04d.\n",x.line,x.s,x.e);
-	}
-	return 0;
+    int n;
+    scanf("%d", &n);
+    for(int i = 1; i <= n; ++i){
+        int m, x, y;
+        scanf("%d %d", &m, &x);
+        for(int j = 1; j < m; ++j){
+            scanf("%d", &y);
+            setLine(x, y, i);
+            v[x].push_back(y);
+            v[y].push_back(x);
+            x = y;
+        }
+    }
+    int k;
+    scanf("%d", &k);
+    while(k--){
+        int s, e, num;
+        scanf("%d %d", &s, &e);
+        minstation = 0x7fffffff;
+        ans.resize(102);
+        vector<node> rp;
+        subwayMap(s, s, s, e, rp, 0);
+        num = ans.size();
+        printf("%d\n", minstation);
+        for(int i = 0; i < num; ++i){
+            printf("Take Line#%d from %04d to %04d.\n", ans[i].line, ans[i].s, ans[i].e);
+        }
+    }
+    return 0;
 }
