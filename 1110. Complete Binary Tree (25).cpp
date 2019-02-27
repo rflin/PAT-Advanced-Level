@@ -1,60 +1,54 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <algorithm>
-#define NULLint 24
+#include <bits/stdc++.h>
+
 using namespace std;
-struct TreeNode
-{
-	int left,right;
-	TreeNode(int L=NULLint,int R=NULLint):left(L),right(R){}
+
+struct TreeNode{
+    int left, right;
 };
-bool root[32];
-int n;
-vector<TreeNode> tree;
-bool iscbt(int r,int &ret)
-{
-	int s;
-	queue<int> q;
-	q.push(r);
-	while((s=q.front())!=NULLint)
-	{
-		ret=s;
-		q.pop();
-		q.push(tree[s].left);
-		q.push(tree[s].right);
-	}
-	while(!q.empty())
-	{
-		s=q.front();
-		q.pop();
-		if(s!=NULLint)
-		{
-			ret=r;return false;
-		}
-	}
-	return true;
-} 
-int trans(string &str)
-{
-	if(str[0]=='-')return NULLint; 
-	int ret=0;
-	for(auto it=str.begin();it!=str.end();++it) ret=ret*10+(*it-'0');
-	return ret; 
+TreeNode T[32];
+
+bool rts[32], visit[32];
+
+int mk(string l){
+    return l == "-" ? -1 : stoi(l);
+}
+void iscbt(int root){
+    queue<int> q;
+    q.push(root);
+    visit[root] = 1;
+    int last = root;
+    while(!q.empty()){
+        int s = q.front();
+        q.pop();
+        if(s == -1) break;
+        last = s;
+        q.push(T[s].left);
+        q.push(T[s].right);
+    }
+    while(!q.empty()){
+        int s = q.front();
+        q.pop();
+        if(s != -1){
+            cout << "NO" << " " << root << endl;
+            return;
+        }
+    }
+    cout << "YES" << " " << last << endl;
 }
 int main()
 {
-	cin>>n;
-	tree.resize(n*10);
-	for(int i=0;i<n;++i)
-	{
-		string str1,str2;
-		cin>>str1>>str2;
-		root[tree[i].left=trans(str1)]=1;
-		root[tree[i].right=trans(str2)]=1;
-	}
-	int r=0,ret=-1;
-	while(root[r])++r;
-	iscbt(r,ret)?cout<<"YES "<<ret:cout<<"NO "<<ret;
-	return 0;
+    int n;
+    cin >> n;
+    for(int i = 0; i < n; ++i){
+        string lft, rgt;
+        cin >> lft >> rgt;
+        T[i].left = mk(lft);
+        T[i].right = mk(rgt);
+        if(T[i].left != -1) rts[T[i].left] = 1;
+        if(T[i].right != -1) rts[T[i].right] = 1;
+    }
+    int root = 0;
+    while(rts[root]) ++root;
+    iscbt(root);
+    return 0;
 }
