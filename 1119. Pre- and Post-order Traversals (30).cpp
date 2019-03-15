@@ -7,36 +7,37 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-int n,pre[32],pos[32];
-bool isunique=1;
+int pre[32], pos[32];
 vector<int> ino;
-void build(int preL,int preR,int posL,int posR)
-{
-	if(preL>preR) return;
-	if(preL==preR){
-		ino.push_back(pre[preL]);
-		return;
-	}
-	int e=pre[preL+1],prex=preL+1,posx=posL;
-	while(posx<posR&&e!=pos[posx]) ++prex,++posx;
-	if(posx==posR-1) isunique=0;
-	build(preL+1,prex,posL,posx);
-	ino.push_back(pre[preL]);
-	build(prex+1,preR,posx+1,posR-1);
+bool isunique = true;
+void build(int preL, int preR, int posL, int posR){
+    if(preL > preR) return;
+    if(preL == preR){
+        ino.push_back(pre[preL]);
+        return;
+    }
+    int e = pre[preL + 1], posidx = posL;
+    while(pos[posidx] != e) ++posidx;
+    if(posidx == posR - 1) isunique = false;
+    build(preL + 1, posidx - posL + preL + 1, posL, posidx);
+    ino.push_back(pre[preL]);
+    build(preR - (posR - 1 - posidx - 1), preR, posidx + 1, posR - 1);
 }
 int main()
 {
-	scanf("%d",&n);
-	for(int i=0;i<n;++i){
-		scanf("%d",&pre[i]);
-	}
-	for(int i=0;i<n;++i){
-		scanf("%d",&pos[i]);
-	}
-	build(0,n-1,0,n-1);
-	isunique?printf("Yes\n"):printf("No\n");
-	for(int i=0;i<n;++i){
-		i==n-1?printf("%d\n",ino[i]):printf("%d ",ino[i]);
-	}
-	return 0;
+    int n;
+    scanf("%d", &n);
+    for(int i = 0; i < n; ++i){
+        scanf("%d", &pre[i]);
+    }
+    for(int i = 0; i < n; ++i){
+        scanf("%d", &pos[i]);
+    }
+    build(0, n - 1, 0, n - 1);
+    printf("%s\n", isunique ? "Yes" : "No");
+    for(int i = 0; i < n; ++i){
+        printf("%d%c", ino[i], i == n - 1 ? '\n' : ' ');
+    }
+    return 0;
 }
+
